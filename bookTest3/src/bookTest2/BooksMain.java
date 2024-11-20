@@ -1,16 +1,17 @@
 package bookTest2;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BooksMain {
 	public static Scanner sc = new Scanner(System.in);
-	
 
 	public static void main(String[] args) throws SQLException {
 		boolean exitFlag = false;
@@ -31,6 +32,9 @@ public class BooksMain {
 			case BookMenu.DELETE:
 				booksDelete();
 				break;
+			case BookMenu.PRICEUPDATE:
+				booksPriceUpdate();
+				break;
 			case BookMenu.EXIT:
 				exitFlag = true;
 				break;
@@ -38,6 +42,40 @@ public class BooksMain {
 
 			System.out.println("The end");
 		}
+	}
+
+	// 책값인상(프로시저)
+	private static void booksPriceUpdate() throws SQLException {
+		// Connection
+		Connection con = null;
+		CallableStatement cstmt = null;
+
+		// 1 Load, 2 connection
+		con = DBConnection.dbCon();
+
+		// 3. Statement
+		// 수정할 데이터를 입력
+		System.out.print("가격인상할 책 번호 : ");
+		int id =Integer.parseInt(sc.nextLine());
+		System.out.print("인상금액 : ");
+		int price =Integer.parseInt(sc.nextLine());
+		
+//		stmt = con.createStatement();
+		cstmt = con.prepareCall("{call BOOKS_PROC(?,?,?)}");
+		cstmt.setInt(1, id);
+		cstmt.setInt(2, price);
+		// 출력될 데이터값으로 3번을 바인딩시킨다.
+		cstmt.registerOutParameter(3, Types.VARCHAR);
+		
+		int result = cstmt.executeUpdate();
+		String message = cstmt.getString(3);
+		System.out.println(message);
+
+		// 4. 내용이 잘 입력이 되었는지 체크
+		System.out.println((result != 0) ? "책값 인상 프로시저 성공" : "책값 인상 프로시저실패");
+
+		// 6. sql 객체 반납
+		DBConnection.dbClose(con, cstmt);
 	}
 
 	// 삭제
@@ -55,8 +93,8 @@ public class BooksMain {
 		int no = Integer.parseInt(sc.nextLine());
 		pstmt = con.prepareStatement("DELETE FROM BOOKS WHERE ID = ? ");
 		pstmt.setInt(1, no);
-		int result=pstmt.executeUpdate();
-		
+		int result = pstmt.executeUpdate();
+
 		// result 값으로 실행한 문장의 카운트를 세서 줌
 //		int result = stmt.executeUpdate("DELETE FROM BOOKS WHERE ID = " + no);
 
@@ -77,9 +115,9 @@ public class BooksMain {
 
 		// 1 Load, 2 connection
 		con = DBConnection.dbCon();
-		
+
 		// 3. Statement
-		//수정할 데이터를 입력
+		// 수정할 데이터를 입력
 		Books books = new Books(7, "JAVA JAVA", "kdj", "2024", 44000);
 //		stmt = con.createStatement();
 		pstmt = con.prepareStatement("UPDATE BOOKS SET TITLE = ?, PUBLISHER = ?, YEAR = ? , PRICE = ? WHERE ID = ? ");
@@ -88,10 +126,9 @@ public class BooksMain {
 		pstmt.setString(3, books.getYear());
 		pstmt.setInt(4, books.getPrice());
 		pstmt.setInt(5, books.getId());
-		
+
 		int result = pstmt.executeUpdate();
-		
-		
+
 		// result 값으로 실행한 문장의 카운트를 세서 줌
 //		int result = stmt.executeUpdate("UPDATE BOOKS SET TITLE = '"+
 //		books.getTitle()+"', PUBLISHER = '"+books.getPublisher()+"', YEAR = '"+books.getYear()+"', PRICE = "+books.getPrice()+"WHERE ID = "+books.getId());
@@ -114,7 +151,7 @@ public class BooksMain {
 
 		// 3. Statement
 		Books books = new Books(0, "Head First JAVA", "kdj", "2008", 23000);
-		//==============================================2단계수정===================================================
+		// ==============================================2단계수정===================================================
 //		stmt = con.createStatement();
 		PreparedStatement pstmt = null;
 		pstmt = con.prepareStatement("INSERT INTO books VALUES (books_id_seq.nextval, ?, ?, ?,?)");
@@ -123,12 +160,10 @@ public class BooksMain {
 		pstmt.setString(3, books.getYear());
 		pstmt.setInt(4, books.getPrice());
 		int result = pstmt.executeUpdate();
-		
-		
+
 		// result 값으로 실행한 문장의 카운트를 세서 줌
 //		int result = stmt.executeUpdate("INSERT INTO books VALUES (books_id_seq.nextval,'" + books.getTitle() + "','"
 //				+ books.getPublisher() + "','" + books.getYear() + "'," + books.getPrice() + ")");
-		
 
 		// 4. 내용이 잘 입력이 되었는지 체크
 		System.out.println((result != 0) ? "입력성공" : "입력실패");
@@ -176,9 +211,11 @@ public class BooksMain {
 		System.out.println("2. 입력");
 		System.out.println("3. 수정");
 		System.out.println("4. 삭제");
-		System.out.println("5. 종료");
+		System.out.println("5. 책 가격 인상");
+		System.out.println("6. 종료");
 		System.out.print("선택해주세요 : ");
 	}
+
 
 	private static void booksListPrint(ArrayList<Books> booksList) {
 		for (Books books : booksList) {
