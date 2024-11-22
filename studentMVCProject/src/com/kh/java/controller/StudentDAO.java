@@ -30,19 +30,23 @@ public class StudentDAO {
 		stmt = con.createStatement();
 		rs = stmt.executeQuery(selectSQL);
 
-		while (rs.next()) {
-			int no = rs.getInt("NO");
-			String name = rs.getString("NAME");
-			int kor = rs.getInt("KOR");
-			int eng = rs.getInt("ENG");
-			int mat = rs.getInt("MAT");
-			int total = rs.getInt("TOTAL");
-			int ave = rs.getInt("AVE");
-			int rank = rs.getInt("RANK");
+		if(rs.next()) {
+            do{
+                int no = rs.getInt("NO");
+                String name = rs.getString("NAME");
+                int kor = rs.getInt("KOR");
+                int eng = rs.getInt("ENG");
+                int mat = rs.getInt("MAT");
+                int total = rs.getInt("TOTAL");
+                int ave = rs.getInt("AVE");
+                int rank = rs.getInt("RANK");
 
-			StudentVO stu = new StudentVO(no, name, kor, eng, mat, total, ave, rank);
-			studentList.add(stu);
-		}
+                StudentVO stu = new StudentVO(no, name, kor, eng, mat, total, ave, rank);
+                studentList.add(stu);
+            }while (rs.next());
+        }else {
+            studentList = null; 
+        }
 
 //		studentListPrint(studentList);
 		DBUtility.dbClose(con, stmt, rs);

@@ -20,6 +20,10 @@ public class StudentRegisterManager {
 		ArrayList<StudentVO> studentList = new ArrayList<StudentVO>();
 		studentList = StudentDAO.totalSelect();
 		printStudentList(studentList);
+		if(studentList == null) {
+			System.out.println("데이터가 존재하지 않습니다.");
+			return;
+		}
 	}
 
 	//전체 학생 리스트 출력 수행
