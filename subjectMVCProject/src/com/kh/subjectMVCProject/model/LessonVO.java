@@ -10,6 +10,12 @@ public class LessonVO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public LessonVO(String abbre, String name) {
+		super();
+		this.abbre = abbre;
+		this.name = name;
+	}
+
 	public LessonVO(int no, String abbre, String name) {
 		super();
 		this.no = no;
@@ -43,7 +49,7 @@ public class LessonVO {
 
 	@Override
 	public String toString() {
-		return "SubjectVO [no=" + no + ", abbre=" + abbre + ", name=" + name + "]";
+		return "LessonVO [no=" + no + ", abbre=" + abbre + ", name=" + name + "]";
 	}
 	
 	

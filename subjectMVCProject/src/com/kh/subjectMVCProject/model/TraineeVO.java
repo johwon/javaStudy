@@ -4,23 +4,40 @@ import java.sql.Date;
 
 public class TraineeVO {
     private int no;			//pk seq
-	private String sd_num;	//FK(STUDENT) 학생번호
+	private String s_num;	//FK(STUDENT) 학생번호
 	private String abbre;	//FK(LESSON) 과목별칭
 	private String section; //전공,부전공,교양
-	private Date tdate;		//수강신청일
+	private Date regdate;		//수강신청일
+	//student join
+	private String s_name;
+	//Lesson join
+	private String l_name;
 	
+	//생성자
 	public TraineeVO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TraineeVO(int no, String sd_num, String abbre, String section, Date tdate) {
+	public TraineeVO(int no, String s_num, String abbre, String section, Date regdate) {
 		super();
 		this.no = no;
-		this.sd_num = sd_num;
+		this.s_num = s_num;
 		this.abbre = abbre;
 		this.section = section;
-		this.tdate = tdate;
+		this.regdate = regdate;
+	}
+
+	//join을 위한 생성자
+	public TraineeVO(int no, String s_num, String abbre, String section, Date regdate, String s_name, String l_name) {
+		super();
+		this.no = no;
+		this.s_num = s_num;
+		this.abbre = abbre;
+		this.section = section;
+		this.regdate = regdate;
+		this.s_name = s_name;
+		this.l_name = l_name;
 	}
 
 	public int getNo() {
@@ -31,12 +48,12 @@ public class TraineeVO {
 		this.no = no;
 	}
 
-	public String getSd_num() {
-		return sd_num;
+	public String getS_num() {
+		return s_num;
 	}
 
-	public void setSd_num(String sd_num) {
-		this.sd_num = sd_num;
+	public void setS_num(String s_num) {
+		this.s_num = s_num;
 	}
 
 	public String getAbbre() {
@@ -55,18 +72,39 @@ public class TraineeVO {
 		this.section = section;
 	}
 
-	public Date getTdate() {
-		return tdate;
+	public Date getRegdate() {
+		return regdate;
 	}
 
-	public void setTdate(Date tdate) {
-		this.tdate = tdate;
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
+
+	public String getS_name() {
+		return s_name;
+	}
+
+	public void setS_name(String s_name) {
+		this.s_name = s_name;
+	}
+
+	public String getL_name() {
+		return l_name;
+	}
+
+	public void setL_name(String l_name) {
+		this.l_name = l_name;
 	}
 
 	@Override
 	public String toString() {
-		return "TraineeVO [no=" + no + ", sd_num=" + sd_num + ", abbre=" + abbre + ", section=" + section + ", tdate="
-				+ tdate + "]";
+		return "TraineeVO [no=" + no + ", s_num=" + s_num + ", abbre=" + abbre + ", section=" + section + ", regdate="
+				+ regdate + ", s_name=" + s_name + ", l_name=" + l_name + "]";
+	}
+
+	public String toAllString() {
+		return "TraineeVO [no=" + no + ", s_num=" + s_num + ", abbre=" + abbre + ", section=" + section + ", regdate="
+				+ regdate + "]";
 	}
 	
 }

@@ -49,7 +49,8 @@ public class MenuViewer {
 	System.out.println("2. 과목 정보 입력");
 	System.out.println("3. 과목 정보 수정");
 	System.out.println("4. 과목 정보 삭제");
-	System.out.println("5. 메인 메뉴");
+	System.out.println("5. 과목 정보 정렬");
+	System.out.println("6. 메인 메뉴");
 	System.out.print("번호 선택 : ");
 	}
 
@@ -61,7 +62,8 @@ public class MenuViewer {
 	System.out.println("2. 수강 신청");
 	System.out.println("3. 수강 신청 수정");
 	System.out.println("4. 수강 신청 취소");
-	System.out.println("5. 메인 메뉴");
+	System.out.println("5. 수강 신청 조인 목록");
+	System.out.println("6. 메인 메뉴");
 	System.out.print("번호 선택 : ");
 	}
 }
